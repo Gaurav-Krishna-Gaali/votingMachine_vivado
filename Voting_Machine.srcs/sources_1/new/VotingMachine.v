@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 19.06.2022 16:09:53
+// Create Date: 01/27/2020 07:50:45 PM
 // Design Name: 
-// Module Name: VotingMachine
+// Module Name: votingMachine
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module VotingMachine(
+module votingMachine(
 input clock,
 input reset,
 input mode,
@@ -42,41 +42,38 @@ wire [7:0] cand4_vote_recvd;
 wire anyValidVote;
 
 assign anyValidVote = valid_vote_1|valid_vote_2|valid_vote_3|valid_vote_4;
-assign led[0] = 1;
-assign led[7] = 1;
 
-
-
-
-ButtonControl bc1(
+buttonControl bc1(
 .clock(clock),
 .reset(reset),
 .button(button1),
 .valid_vote(valid_vote_1)
- );
- 
-ButtonControl bc2(
+);
+
+buttonControl bc2(
 .clock(clock),
 .reset(reset),
 .button(button2),
 .valid_vote(valid_vote_2)
- );
- 
-ButtonControl bc3(
+);
+
+buttonControl bc3(
 .clock(clock),
 .reset(reset),
-.button(button3),
+.button(button3),//
 .valid_vote(valid_vote_3)
- );
- 
-ButtonControl bc4(
+);
+
+buttonControl bc4(
 .clock(clock),
 .reset(reset),
 .button(button4),
 .valid_vote(valid_vote_4)
- );
-  
-VoteLogger VL(
+);
+
+
+
+voteLogger VL(
 .clock(clock),
 .reset(reset),
 .mode(mode),
@@ -88,9 +85,10 @@ VoteLogger VL(
 .cand2_vote_recvd(cand2_vote_recvd),
 .cand3_vote_recvd(cand3_vote_recvd),
 .cand4_vote_recvd(cand4_vote_recvd)
- );
+);
 
-ModeControl MC(
+
+modeControl MC(
 .clock(clock),
 .reset(reset),
 .mode(mode),
@@ -105,5 +103,5 @@ ModeControl MC(
 .candidate4_button_press(valid_vote_4),
 .leds(led)
     );
-  
+
 endmodule

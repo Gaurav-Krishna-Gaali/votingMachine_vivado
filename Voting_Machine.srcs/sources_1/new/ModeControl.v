@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 19.06.2022 16:26:10
+// Create Date: 01/27/2020 07:59:45 PM
 // Design Name: 
-// Module Name: ModeControl
+// Module Name: modeControl
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module ModeControl(
+module modeControl(
 input clock,
 input reset,
 input mode,
@@ -36,45 +36,42 @@ input candidate4_button_press,
 output reg [7:0] leds
     );
     
-reg [30:0] counter ;
+reg [30:0] counter;
 
 always @(posedge clock)
 begin
     if(reset)
-        counter <=0;  //Whenever reset is pressed, counter started from 
+        counter <= 0;   //Whenever reset is pressed, counter started from 0
     else if(valid_vote_casted) //If a valid vote is casted, counter becomes 1
         counter <= counter + 1;
-        
-    else if(counter != 0 & counter < 100000000) // If counter is not 0, increment it till 1000000
-         counter <= counter + 1;
-         
+    else if(counter !=0 & counter < 100000000)//If counter is not 0, increment it till 100000000
+        counter <= counter + 1;
     else //Once counter becomes 100000000, reset it to zero
         counter <= 0;
-                
-end
-
+end    
+    
 always @(posedge clock)
 begin
     if(reset)
-        leds <=0;
+        leds <= 0;
     else
     begin
-        if(mode == 0 & counter > 0 & 100000000 ) // mode 0 -> Voting Mode || mode 1 -> result mode
-           leds <= 8'hFF;
-        else if (mode == 0)
+        if(mode == 0 &  counter > 0 ) //mode0 -> voting mode, mode 1 -> result mode
+            leds <= 8'hFF;
+        else if(mode == 0)
             leds <= 8'h00;
-        else if (mode == 1)
+        else if(mode == 1) //result mode
         begin
             if(candidate1_button_press)
                 leds <= candidate1_vote;
             else if(candidate2_button_press)
-                 leds <= candidate2_vote;
+                leds <= candidate2_vote;
             else if(candidate3_button_press)
-                  leds <= candidate3_vote;
+                leds <= candidate3_vote;
             else if(candidate4_button_press)
-                  leds <= candidate4_vote;
+                leds <= candidate4_vote;
         end
-     end
+    end  
 end
-
+    
 endmodule
